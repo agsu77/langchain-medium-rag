@@ -23,34 +23,17 @@ if __name__ == "__main__":
 
         print("Splitting...")
         text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
-        #texts = text_splitter.split_documents(document)
-        doc1 = Document(page_content="foo is something")
-        doc2 = Document(page_content="Peñarol peñaroool")
-        texts = [doc1, doc2]
+        texts = text_splitter.split_documents(document)
         print(f"created {len(texts)} chunks")
 
         embeddings = OllamaEmbeddings(model="llama3.2")
 
-        print("creating DB...")
-        #pc = Pinecone(pinecone_api_key=os.environ["PINECONE_API_KEY"])
         print("ingesting...")
-        #index = pc.Index(os.environ["INDEX_NAME"])
-        #vector_store = PineconeVectorStore(index, embeddings)
-        #ids = []
-        #for i in range (1, len(texts)):
-        #    ids.append(i)
-        #recods = asyncio.run( vector_store.aadd_documents(documents=texts, ids=ids) )
-        #print(recods)
+        client = chromadb.HttpClient()
+        client.heartbeat()
         
-        #client = chromadb.HttpClient()
-        print("intento desde documents...")
-        Chroma(
-            embedding_function=embeddings,
-            create_collection_if_not_exists=True,
-            collection_name="prueba",
-            persist_directory="./chroma_langchain_db"
-        )
-        Chroma.from_documents(documents=texts, embedding=embeddings)
+        Chroma.from_documents(documents=texts, embedding=embeddings, 
+                              client=client, collection_name="prueba")
         print("finish")
     except Exception as e:
         print(e)

@@ -1,0 +1,21 @@
+{
+    // Usa IntelliSense para aprender sobre los posibles atributos.
+    // Pasa el mouse para ver descripciones de los atributos existentes.
+    // Para más información, visita: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
