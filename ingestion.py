@@ -1,4 +1,3 @@
-import chromadb
 import os
 from langchain_community.document_loaders import TextLoader
 from dotenv import load_dotenv
@@ -7,7 +6,6 @@ from langchain_text_splitters import CharacterTextSplitter
 from pinecone import Pinecone
 from langchain_pinecone import PineconeVectorStore
 from langchain_core.documents import Document
-from langchain_chroma import Chroma
 
 load_dotenv()
 
@@ -29,11 +27,9 @@ if __name__ == "__main__":
         embeddings = OllamaEmbeddings(model="llama3.2")
 
         print("ingesting...")
-        client = chromadb.HttpClient()
-        client.heartbeat()
-        
-        Chroma.from_documents(documents=texts, embedding=embeddings, 
-                              client=client, collection_name="prueba")
+        PineconeVectorStore.from_documents(
+            texts, embeddings, index_name=os.environ["INDEX_NAME"]
+        )
         print("finish")
     except Exception as e:
         print(e)
